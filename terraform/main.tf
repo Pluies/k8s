@@ -36,8 +36,6 @@ resource "google_container_cluster" "cluster" {
     password = "${var.kube_password}"
   }
 
-  remove_default_node_pool = true
-
   node_pool {
     # Per-zone node count
     node_count = 1
