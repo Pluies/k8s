@@ -10,7 +10,11 @@ resource "google_container_cluster" "cluster" {
   zone               = "europe-west1"
   min_master_version = "1.11"
 
-  master_authorized_networks_config {}
+  master_authorized_networks_config {
+    cidr_blocks {
+      cidr_block = "2.28.4.236/32"
+    }
+  }
 
   additional_zones = [
     "europe-west1-d",
