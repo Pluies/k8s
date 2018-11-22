@@ -66,6 +66,16 @@ resource "google_container_cluster" "cluster" {
   }
 }
 
+resource "google_compute_firewall" "web" {
+  name    = "web"
+  network = "https://www.googleapis.com/compute/v1/projects/${var.project}/global/networks/default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+}
+
 # The following outputs allow authentication and connectivity to the GKE Cluster.
 output "client_certificate" {
   value = "${google_container_cluster.cluster.master_auth.0.client_certificate}"
