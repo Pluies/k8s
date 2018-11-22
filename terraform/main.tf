@@ -6,7 +6,7 @@ provider "google" {
 
 # Set up the cluster and its node pool
 resource "google_container_cluster" "cluster" {
-  name               = "kubernetes-cluster"
+  name               = "k8s"
   zone               = "europe-west1"
   min_master_version = "1.11"
 
