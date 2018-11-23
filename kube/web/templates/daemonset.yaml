@@ -20,7 +20,7 @@ spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - image: nginx:1.15.3-alpine
+      - image: nginx:1-alpine
         name: nginx
         ports:
         - name: http

@@ -28,7 +28,7 @@ data:
         server_name blog.florentdelannoy.com;
         access_log /dev/stdout;
         resolver kube-dns.kube-system.svc.cluster.local;
-        set $backend "blog";
+        set $backend "blog.web.svc.cluster.local";
         location / {
           proxy_pass http://$backend;
         }
