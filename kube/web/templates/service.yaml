@@ -1,0 +1,14 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: blog
+  namespace: {{ $.Values.namespace }}
+spec:
+  selector:
+    app: blog
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
