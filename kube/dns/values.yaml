@@ -1,0 +1,7 @@
+namespace: dns
+zone: florentdelannoy.com
+subdomain: kube
+ovh:
+  application_key: ~
+  application_secret: ~
+  consumer_key: ~
