@@ -9,6 +9,9 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          annotations:
+            checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
         spec:
           serviceAccountName: ovh-dns-updater
           restartPolicy: OnFailure
