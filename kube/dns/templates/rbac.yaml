@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: ovh-dns-updater
+  name: gcloud-dns-updater
   namespace: {{ $.Values.namespace }}
 
 ---
@@ -26,5 +26,5 @@ roleRef:
   name: node-reader
 subjects:
 - kind: ServiceAccount
-  name: ovh-dns-updater
+  name: gcloud-dns-updater
   namespace: {{ $.Values.namespace }}

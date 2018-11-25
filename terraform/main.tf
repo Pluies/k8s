@@ -61,6 +61,7 @@ resource "google_container_cluster" "cluster" {
         "https://www.googleapis.com/auth/service.management.readonly",
         "https://www.googleapis.com/auth/servicecontrol",
         "https://www.googleapis.com/auth/trace.append",
+        "https://www.googleapis.com/auth/ndev.clouddns.readwrite", # Manage DNS from k8s
       ]
     }
   }
@@ -74,6 +75,11 @@ resource "google_compute_firewall" "web" {
     protocol = "tcp"
     ports    = ["80", "443"]
   }
+}
+
+resource "google_dns_managed_zone" "zone" {
+  name     = "kube"
+  dns_name = "${var.domain}"
 }
 
 # The following outputs allow authentication and connectivity to the GKE Cluster.

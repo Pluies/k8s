@@ -2,39 +2,25 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: ovh-dns-updater
+  name: gcloud-dns-updater
   namespace: {{ $.Values.namespace}}
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
-        metadata:
-          annotations:
-            checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
         spec:
-          serviceAccountName: ovh-dns-updater
+          serviceAccountName: gcloud-dns-updater
           restartPolicy: OnFailure
           containers:
-          - name: ovh-dns-updater
-            image: pluies/ovh_dns_updater
+          - name: gcloud-dns-updater
+            image: pluies/gcloud_dns_updater
             env:
             - name: DNS_ZONE
               value: {{ $.Values.zone }}
             - name: DNS_SUBDOMAIN
               value: {{ $.Values.subdomain }}
-            - name: OVH_APPLICATION_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: ovh-dns-updater
-                  key: OVH_APPLICATION_KEY
-            - name: OVH_APPLICATION_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: ovh-dns-updater
-                  key: OVH_APPLICATION_SECRET
-            - name: OVH_CONSUMER_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: ovh-dns-updater
-                  key: OVH_CONSUMER_KEY
+            - name: GCLOUD_ZONE_NAME
+              value: {{ $.Values.gcloud.zone_name }}
+            - name: GCLOUD_DOMAIN
+              value: {{ $.Values.gcloud.domain }}
