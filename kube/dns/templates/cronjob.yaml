@@ -11,7 +11,7 @@ spec:
       template:
         spec:
           serviceAccountName: gcloud-dns-updater
-          restartPolicy: OnFailure
+          restartPolicy: Never
           containers:
           - name: gcloud-dns-updater
             image: pluies/gcloud_dns_updater
