@@ -29,7 +29,12 @@ spec:
         volumeMounts:
         - name: "config"
           mountPath: "/etc/nginx"
+        - name: secret-volume
+          mountPath: /tls
       volumes:
       - name: config
         configMap:
           name: nginx-conf
+      - name: secret-volume
+        secret:
+          secretName: certbot-secret

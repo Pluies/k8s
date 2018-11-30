@@ -1,0 +1,44 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: certbot
+  namespace: {{ $.Values.namespace}}
+spec:
+  schedule: "35 10 * * */2"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: certbot
+          annotations:
+            checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        spec:
+          serviceAccountName: certbot
+          restartPolicy: Never
+          containers:
+          - name: certbot
+            image: pluies/certnly
+            env:
+            - name: EMAIL
+              value: {{ $.Values.certbot.email }}
+            - name: DOMAINS
+              value: {{ $.Values.certbot.domains }}
+            - name: SECRET_NAME
+              value: {{ $.Values.certbot.secret_name }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: EXISTING_SECRET_TAR
+              value: "/tls/letsencrypt.tar.gz"
+            ports:
+            - containerPort: 80
+            volumeMounts:
+            - name: secret-volume
+              mountPath: /tls
+          volumes:
+          - name: secret-volume
+            secret:
+              secretName: certbot-secret

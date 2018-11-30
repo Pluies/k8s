@@ -12,3 +12,16 @@ spec:
     port: 80
     targetPort: 80
 
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: certbot
+  namespace: {{ $.Values.namespace }}
+spec:
+  selector:
+    app: certbot
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

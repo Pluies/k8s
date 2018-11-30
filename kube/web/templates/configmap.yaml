@@ -22,9 +22,67 @@ data:
         location / {
           return 200 "EHLO FROM KUBE";
         }
+        location ^~ /.well-known/acme-challenge/ {
+          set $backend "certbot.web.svc.cluster.local";
+          proxy_pass http://$backend;
+        }
       }
+      # Legacy blog
       server {
         listen 80;
+        server_name uponmyshoulder.com www.uponmyshoulder.com;
+        listen 443 ssl;
+
+        # TODO Change this
+        ssl_certificate /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__fullchain.pem;
+        ssl_certificate_key /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__privkey.pem;
+
+        location ^~ /.well-known/acme-challenge/ {
+          set $backend "certbot.web.svc.cluster.local";
+          proxy_pass http://$backend;
+        }
+        location / {
+          set $newhost "blog.florentdelannoy.com";
+          return 301 https://$newhost$request_uri;
+        }
+      }
+      # Antipodes
+      server {
+        listen 80;
+        server_name antipodes.plui.es;
+        listen 443 ssl;
+
+        # TODO Change this
+        ssl_certificate /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__fullchain.pem;
+        ssl_certificate_key /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__privkey.pem;
+
+        set $backend "antipodes.web.svc.cluster.local";
+        location / {
+          proxy_pass http://$backend;
+        }
+        location ^~ /.well-known/acme-challenge/ {
+          set $backend "certbot.web.svc.cluster.local";
+          proxy_pass http://$backend;
+        }
+      }
+      # Actual blog!
+      server {
+        listen 80;
+        server_name blog.florentdelannoy.com;
+        access_log /dev/stdout;
+        resolver kube-dns.kube-system.svc.cluster.local;
+        location / {
+          return 301 https://$host$request_uri;
+        }
+        location ^~ /.well-known/acme-challenge/ {
+          set $backend "certbot.web.svc.cluster.local";
+          proxy_pass http://$backend;
+        }
+      }
+      server {
+        listen 443 ssl;
+        ssl_certificate /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__fullchain.pem;
+        ssl_certificate_key /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__privkey.pem;
         server_name blog.florentdelannoy.com;
         access_log /dev/stdout;
         resolver kube-dns.kube-system.svc.cluster.local;
