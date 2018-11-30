@@ -34,8 +34,8 @@ data:
         listen 443 ssl;
 
         # TODO Change this
-        ssl_certificate /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__fullchain.pem;
-        ssl_certificate_key /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/blog.florentdelannoy.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/blog.florentdelannoy.com/privkey.pem;
 
         location ^~ /.well-known/acme-challenge/ {
           set $backend "certbot.web.svc.cluster.local";
@@ -53,8 +53,8 @@ data:
         listen 443 ssl;
 
         # TODO Change this
-        ssl_certificate /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__fullchain.pem;
-        ssl_certificate_key /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/blog.florentdelannoy.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/blog.florentdelannoy.com/privkey.pem;
 
         set $backend "antipodes.web.svc.cluster.local";
         location / {
@@ -81,8 +81,8 @@ data:
       }
       server {
         listen 443 ssl;
-        ssl_certificate /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__fullchain.pem;
-        ssl_certificate_key /tls/__etc__letsencrypt__live__blog.florentdelannoy.com-0001__privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/blog.florentdelannoy.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/blog.florentdelannoy.com/privkey.pem;
         server_name blog.florentdelannoy.com;
         access_log /dev/stdout;
         resolver kube-dns.kube-system.svc.cluster.local;
