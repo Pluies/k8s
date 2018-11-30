@@ -2,5 +2,5 @@ namespace: web
 
 certbot:
   email: florent.delannoy@gmail.com
-  domains: blog.florentdelannoy.com
+  domains: blog.florentdelannoy.com,kube.florentdelannoy.com
   secret_name: certbot-secret

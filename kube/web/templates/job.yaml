@@ -27,6 +27,8 @@ spec:
               value: {{ $.Values.certbot.domains }}
             - name: SECRET_NAME
               value: {{ $.Values.certbot.secret_name }}
+            - name: USE_STAGING
+              value: "true"
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
