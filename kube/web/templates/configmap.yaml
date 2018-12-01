@@ -16,6 +16,9 @@ data:
     http {
       server {
         listen 80 default_server;
+        listen 443 ssl default_server;
+        ssl_certificate /etc/letsencrypt/live/kube.florentdelannoy.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/kube.florentdelannoy.com/privkey.pem;
         server_name _;
         access_log /dev/stdout;
         resolver kube-dns.kube-system.svc.cluster.local;
