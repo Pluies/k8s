@@ -17,8 +17,8 @@ data:
       server {
         listen 80 default_server;
         listen 443 ssl default_server;
-        ssl_certificate /etc/letsencrypt/live/kube.florentdelannoy.com/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/kube.florentdelannoy.com/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/certbot-secret/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/certbot-secret/privkey.pem;
         server_name _;
         access_log /dev/stdout;
         resolver kube-dns.kube-system.svc.cluster.local;
@@ -37,8 +37,8 @@ data:
         listen 443 ssl;
 
         # TODO Change this
-        ssl_certificate /etc/letsencrypt/live/blog.florentdelannoy.com/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/blog.florentdelannoy.com/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/certbot-secret/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/certbot-secret/privkey.pem;
 
         location ^~ /.well-known/acme-challenge/ {
           set $backend "certbot.web.svc.cluster.local";
@@ -56,8 +56,8 @@ data:
         listen 443 ssl;
 
         # TODO Change this
-        ssl_certificate /etc/letsencrypt/live/blog.florentdelannoy.com/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/blog.florentdelannoy.com/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/certbot-secret/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/certbot-secret/privkey.pem;
 
         set $backend "antipodes.web.svc.cluster.local";
         location / {
@@ -84,8 +84,8 @@ data:
       }
       server {
         listen 443 ssl;
-        ssl_certificate /etc/letsencrypt/live/blog.florentdelannoy.com/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/blog.florentdelannoy.com/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/certbot-secret/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/certbot-secret/privkey.pem;
         server_name blog.florentdelannoy.com;
         access_log /dev/stdout;
         resolver kube-dns.kube-system.svc.cluster.local;
