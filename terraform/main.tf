@@ -12,7 +12,7 @@ resource "google_container_cluster" "cluster" {
 
   master_authorized_networks_config {
     cidr_blocks {
-      cidr_block = "2.28.4.236/32"
+      cidr_block = "${var.allowed_cidr}"
     }
   }
 
