@@ -34,6 +34,8 @@ data:
       server {
         listen 80;
         server_name uponmyshoulder.com www.uponmyshoulder.com;
+        access_log /dev/stdout;
+        resolver kube-dns.kube-system.svc.cluster.local;
         listen 443 ssl;
 
         # TODO Change this
@@ -53,6 +55,8 @@ data:
       server {
         listen 80;
         server_name antipodes.plui.es;
+        access_log /dev/stdout;
+        resolver kube-dns.kube-system.svc.cluster.local;
         listen 443 ssl;
 
         # TODO Change this

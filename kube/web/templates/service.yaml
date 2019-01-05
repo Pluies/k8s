@@ -16,6 +16,20 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
+  name: antipodes
+  namespace: {{ $.Values.namespace }}
+spec:
+  selector:
+    app: antipodes
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+
+---
+kind: Service
+apiVersion: v1
+metadata:
   name: certbot
   namespace: {{ $.Values.namespace }}
 spec:

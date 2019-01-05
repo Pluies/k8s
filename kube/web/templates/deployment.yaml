@@ -21,3 +21,30 @@ spec:
         image: pluies/blog
         ports:
         - containerPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: antipodes
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app: antipodes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: antipodes
+  template:
+    metadata:
+      labels:
+        app: antipodes
+    spec:
+      containers:
+      - name: antipodes
+        image: pluies/antipodes
+        ports:
+        - containerPort: 3000
+        env:
+        - name: GOOGLE_MAPS_API_KEY
+          value: {{ $.Values.antipodes.google_maps_api_key }}

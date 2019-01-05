@@ -4,3 +4,6 @@ certbot:
   email: florent.delannoy@gmail.com
   domains: blog.florentdelannoy.com,kube.florentdelannoy.com
   secret_name: certbot-secret
+
+antipodes:
+  google_maps_api_key: AIzaSyAdHQ05Rzxj2GOfcdKFJ3T2O0JOoGmktlU
