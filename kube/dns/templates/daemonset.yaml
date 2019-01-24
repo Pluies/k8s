@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: gcloud-dns-updater
+  namespace: {{ $.Values.namespace}}
+spec:
+  selector:
+    matchLabels:
+      name: gcloud-dns-updater
+  template:
+    metadata:
+      labels:
+        name: gcloud-dns-updater
+    spec:
+      serviceAccountName: gcloud-dns-updater
+      containers:
+      - name: gcloud-dns-updater
+        imagePullPolicy: Always
+        image: pluies/gcloud_dns_updater
+        env:
+        - name: DNS_ZONE
+          value: {{ $.Values.zone }}
+        - name: DNS_SUBDOMAIN
+          value: {{ $.Values.subdomain }}
+        - name: GCLOUD_ZONE_NAME
+          value: {{ $.Values.gcloud.zone_name }}
+        - name: GCLOUD_DOMAIN
+          value: {{ $.Values.gcloud.domain }}
+        - name: INTERVAL
+          value: "{{ $.Values.interval }}"

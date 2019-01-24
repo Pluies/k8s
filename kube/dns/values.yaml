@@ -1,6 +1,7 @@
 namespace: dns
 zone: florentdelannoy.com
 subdomain: kube
+interval: 3600
 gcloud:
   domain: "kube.florentdelannoy.com."
   zone_name: kube
