@@ -20,12 +20,9 @@ spec:
           containers:
           - name: certbot
             image: pluies/certnly
-            #command:
-            #- sleep
-            #- "600000"
             env:
             - name: EMAIL
-              value: {{ $.Values.certbot.email }}
+              value: "{{ $.Values.certbot.email }}@{{ $.Values.certbot.email_domain }}"
             - name: DOMAINS
               value: {{ $.Values.certbot.domains }}
             - name: SECRET_NAME

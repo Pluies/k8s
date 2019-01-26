@@ -1,9 +1,12 @@
 namespace: web
 
 certbot:
-  email: florent.delannoy@gmail.com
+  email: florent.delannoy
+  email_domain: gmail.com
   domains: blog.florentdelannoy.com,kube.florentdelannoy.com
   secret_name: certbot-secret
 
 antipodes:
+  # NB: that _looks_ like a secret... But actually needs to be in the HTML
+  # source of the webpage, so no secret at all.
   google_maps_api_key: AIzaSyAdHQ05Rzxj2GOfcdKFJ3T2O0JOoGmktlU
