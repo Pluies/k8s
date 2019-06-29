@@ -6,9 +6,9 @@ provider "google" {
 
 # Set up the cluster and its node pool
 resource "google_container_cluster" "cluster" {
-  name               = "kube"
-  zone               = "europe-west1"
-  min_master_version = "1.11"
+  name               = "easternkube"
+  zone               = "us-east1-c"
+  min_master_version = "1.13"
 
   # Whitelist the following CIDR block to connect to the Kubernetes API
   master_authorized_networks_config {
@@ -24,11 +24,6 @@ resource "google_container_cluster" "cluster" {
   # - Iowa: us-central1
   # - South Carolina: us-east1
   # See https://cloud.google.com/free/docs/gcp-free-tier
-  additional_zones = [
-    "europe-west1-d",
-    "europe-west1-b",
-    "europe-west1-c",
-  ]
 
   # Disable addons for cost-savings
   addons_config {
@@ -56,7 +51,7 @@ resource "google_container_cluster" "cluster" {
 
   node_pool {
     # Per-zone node count
-    node_count = 1
+    node_count = 2
 
     management {
       auto_repair  = true
@@ -64,8 +59,8 @@ resource "google_container_cluster" "cluster" {
     }
 
     node_config {
-      # Cost-saving: `f1-micro` is the smallest possible instance type
-      machine_type = "f1-micro"
+      # Cost-saving: `f1-micro` is the smallest possible instance type... But doesn't work anymore.
+      machine_type = "g1-small"
 
       # More cost-saving: preemptible instances are cheaper
       preemptible  = true
