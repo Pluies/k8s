@@ -1,0 +1,66 @@
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: blog-cert
+  namespace: {{ $.Values.namespace }}
+spec:
+  secretName: blog-cert-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: blog.florentdelannoy.com
+  dnsNames:
+  - blog.florentdelannoy.com
+  acme:
+    config:
+    - http01:
+        ingressClass: nginx
+      domains:
+      - blog.florentdelannoy.com
+      - kube.florentdelannoy.com
+      - antipodes.plui.es
+
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: blog-cert-prod
+  namespace: {{ $.Values.namespace }}
+spec:
+  secretName: blog-cert-prod-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: blog.florentdelannoy.com
+  dnsNames:
+  - blog.florentdelannoy.com
+  acme:
+    config:
+    - http01:
+        ingressClass: nginx
+      domains:
+      - blog.florentdelannoy.com
+      - kube.florentdelannoy.com
+      - antipodes.plui.es
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: acme-challenge-service
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  acme-challenge-mapping
+      prefix: /.well-known/acme-challenge
+      rewrite: ""
+      service: acme-challenge-service
+spec:
+  ports:
+  - port: 80
+    targetPort: 8089
+  selector:
+    certmanager.k8s.io/acme-http01-solver: "true"

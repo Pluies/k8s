@@ -1,0 +1,6 @@
+---
+dependencies:
+- name: ambassador
+  version: 2.11.0
+  repository: "file://ambassador"
+

@@ -1,0 +1,31 @@
+---
+apiVersion: getambassador.io/v1
+kind: Mapping
+metadata:
+  name: blog
+spec:
+  prefix: /
+  timeout_ms: 30000
+  host: blog.florentdelannoy.com
+  service: http://blog
+---
+apiVersion: getambassador.io/v1
+kind: TLSContext
+metadata:
+  name: blog
+spec:
+  hosts:
+  - kube.florentdelannoy.com
+  - blog.florentdelannoy.com
+  - antipodes.plui.es
+  secret: blog-cert-prod-tls
+---
+apiVersion: getambassador.io/v1
+kind: Mapping
+metadata:
+  name: antipodes
+spec:
+  prefix: /
+  timeout_ms: 30000
+  host: antipodes.plui.es
+  service: http://antipodes

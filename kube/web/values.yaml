@@ -10,3 +10,48 @@ antipodes:
   # NB: that _looks_ like a secret... But actually needs to be in the HTML
   # source of the webpage, so no secret at all.
   google_maps_api_key: AIzaSyAdHQ05Rzxj2GOfcdKFJ3T2O0JOoGmktlU
+
+ambassador:
+  daemonSet: true
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
+  securityContext:
+    runAsUser: 0
+
+  service:
+    type: ClusterIP
+    http:
+      enabled: true
+      port: 80
+      targetPort: 8080
+    https:
+      enabled: true
+      port: 443
+      targetPort: 8443
+    annotations:
+      getambassador.io/config: |
+        ---
+        apiVersion: ambassador/v1
+        kind: Module
+        name: ambassador
+        config:
+          service_port: 443
+          diagnostics:
+            enabled: true
+        ---
+        apiVersion: ambassador/v1
+        kind: Module
+        name: tls
+        config:
+          server:
+            enabled: True
+            redirect_cleartext_from: 80
+            secret: blog-cert-prod-tls
+
+  resources:
+    limits:
+      cpu: 150m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
