@@ -29,3 +29,13 @@ spec:
   timeout_ms: 30000
   host: antipodes.plui.es
   service: http://antipodes
+---
+apiVersion: getambassador.io/v1
+kind: Mapping
+metadata:
+  name: kube
+spec:
+  prefix: /
+  timeout_ms: 30000
+  host: kube.florentdelannoy.com
+  service: http://blog

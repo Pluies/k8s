@@ -1,19 +1,19 @@
 # Configure the Google provider
 provider "google" {
-  project = "${var.project}"
+  project = var.project
   region  = "europe-west1"
 }
 
 # Set up the cluster and its node pool
 resource "google_container_cluster" "cluster" {
   name               = "easternkube"
-  zone               = "us-east1-c"
-  min_master_version = "1.13"
+  location           = "us-east1-c"
+  min_master_version = "1.15"
 
   # Whitelist the following CIDR block to connect to the Kubernetes API
   master_authorized_networks_config {
     cidr_blocks {
-      cidr_block = "${var.allowed_cidr}"
+      cidr_block = var.allowed_cidr
     }
   }
 
@@ -33,20 +33,16 @@ resource "google_container_cluster" "cluster" {
     http_load_balancing {
       disabled = true
     }
-
-    # The Kubernetes dashboard itself is a free & open-source project, but uses
-    # resources on the cluster. Unless you need it, let's take it out.
-    kubernetes_dashboard {
-      disabled = true
-    }
   }
 
   # Disable StackDriver / logging
   logging_service = "none"
+  # Disable monitoring too
+  monitoring_service = "none"
 
   master_auth {
-    username = "${var.kube_username}"
-    password = "${var.kube_password}"
+    username = var.kube_username
+    password = var.kube_password
   }
 
   node_pool {
@@ -63,7 +59,7 @@ resource "google_container_cluster" "cluster" {
       machine_type = "g1-small"
 
       # More cost-saving: preemptible instances are cheaper
-      preemptible  = true
+      preemptible = true
 
       # More cost-saving: 30GB total storage is included in the always-free tier
       disk_size_gb = 10
@@ -96,7 +92,10 @@ resource "google_compute_firewall" "web" {
 # NB: this is not free, each managed zone costs $0.20 per month
 resource "google_dns_managed_zone" "zone" {
   name     = "kube"
-  dns_name = "${var.domain}"
+  dns_name = var.domain
+  dnssec_config {
+    state = "off"
+  }
 }
 
 # The following outputs allow authentication and connectivity to the GKE Cluster.
