@@ -8,7 +8,13 @@ provider "google" {
 resource "google_container_cluster" "cluster" {
   name               = "easternkube"
   location           = "us-east1-c"
-  min_master_version = "1.15"
+  min_master_version = "1.17"
+
+  # Choose how quickly you'd like new features!
+  release_channel {
+    channel = "RAPID"
+    # Other options are REGULAR or STABLE
+  }
 
   # Whitelist the following CIDR block to connect to the Kubernetes API
   master_authorized_networks_config {
