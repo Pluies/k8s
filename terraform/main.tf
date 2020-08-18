@@ -8,12 +8,12 @@ provider "google" {
 resource "google_container_cluster" "cluster" {
   name               = "easternkube"
   location           = "us-east1-c"
-  min_master_version = "1.17"
+  min_master_version = "1.16"
 
   # Choose how quickly you'd like new features!
   release_channel {
-    channel = "RAPID"
-    # Other options are REGULAR or STABLE
+    # RAPID, REGULAR or STABLE - going middle of the road here
+    channel = "REGULAR"
   }
 
   # Whitelist the following CIDR block to connect to the Kubernetes API
@@ -62,7 +62,8 @@ resource "google_container_cluster" "cluster" {
 
     node_config {
       # Cost-saving: `f1-micro` is the smallest possible instance type... But doesn't work anymore.
-      machine_type = "g1-small"
+      # Let's try the new types!
+      machine_type = "e2-micro"
 
       # More cost-saving: preemptible instances are cheaper
       preemptible = true
