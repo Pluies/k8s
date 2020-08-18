@@ -6,3 +6,4 @@ terraform.tfstate.backup
 env
 charts
 requirements.lock
+charts

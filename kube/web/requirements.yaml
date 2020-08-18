@@ -1,6 +1,5 @@
 ---
 dependencies:
 - name: ambassador
-  version: 2.11.0
-  repository: "file://ambassador"
-
+  version: 6.5.2
+  repository: "https://www.getambassador.io"

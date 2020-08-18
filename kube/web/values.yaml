@@ -18,6 +18,11 @@ ambassador:
   securityContext:
     runAsUser: 0
 
+  image:
+    repository: docker.io/datawire/ambassador
+    tag: 1.6.2
+  enableAES: false
+
   service:
     type: ClusterIP
     http:

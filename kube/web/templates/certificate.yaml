@@ -1,5 +1,5 @@
 ---
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: blog-cert
@@ -9,20 +9,13 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
-  commonName: blog.florentdelannoy.com
   dnsNames:
   - blog.florentdelannoy.com
-  acme:
-    config:
-    - http01:
-        ingressClass: nginx
-      domains:
-      - blog.florentdelannoy.com
-      - kube.florentdelannoy.com
-      - antipodes.plui.es
+  - kube.florentdelannoy.com
+  - antipodes.plui.es
 
 ---
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: blog-cert-prod
@@ -32,35 +25,28 @@ spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: blog.florentdelannoy.com
   dnsNames:
   - blog.florentdelannoy.com
-  acme:
-    config:
-    - http01:
-        ingressClass: nginx
-      domains:
-      - blog.florentdelannoy.com
-      - kube.florentdelannoy.com
-      - antipodes.plui.es
+  - kube.florentdelannoy.com
+  - antipodes.plui.es
 
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-challenge-mapping
+spec:
+  prefix: /.well-known/acme-challenge/
+  rewrite: ""
+  service: acme-challenge-service
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: acme-challenge-service
-  annotations:
-    getambassador.io/config: |
-      ---
-      apiVersion: ambassador/v1
-      kind:  Mapping
-      name:  acme-challenge-mapping
-      prefix: /.well-known/acme-challenge
-      rewrite: ""
-      service: acme-challenge-service
 spec:
   ports:
   - port: 80
     targetPort: 8089
   selector:
-    certmanager.k8s.io/acme-http01-solver: "true"
+    acme.cert-manager.io/http01-solver: "true"

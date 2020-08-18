@@ -1,3 +1,7 @@
+Create the namespace and install the web assets:
 ```
-helm template --namespace web -n ambassador . | kubectl -nweb apply -f -
+kubectl create ns web
+helm upgrade --install --namespace web web .
 ```
+
+Note: relies on CRDs from `../ssl`!
