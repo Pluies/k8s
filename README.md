@@ -31,20 +31,9 @@ and I really like the templating support and auto-ordering of elements (so that
 a ConfigMap gets applied before the Deployment that relies on it, regardless of
 whether it's before it in the file or not).
 
-I'll be organising each namespace as its own Helm chart, but won't be using Tiller,
-the server-side of Helm, as it's a bit heavy for our tiny tiny cluster.
+Helm 2 used to require a server-side component, Tiller, which was a bit heavy.
+Thankfully, Helm 3 did away with Tiller, and we can now manage everything through
+Helm!
 
-So, in order to apply these, go into one of the subfolders of `kube/` and run:
-
-```bash
-helm template . | kubectl apply -f -
-```
-
-Note: this means we lose two of the big selling points of Helm: rollbacks and
-deletion of resources.
-
-Deletion of resources could be achived through tactical use of the `--prune`
-flag, but given we do one-chart-per-namespace, we could also delete the whole
-namespace and start again.
-
-Rollbacks would have to be done by reapplying the previous version from Git.
+In order to apply the various bits, go into one of the subfolders of `kube/` and
+follow the README!
