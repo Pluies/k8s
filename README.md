@@ -35,5 +35,26 @@ Helm 2 used to require a server-side component, Tiller, which was a bit heavy.
 Thankfully, Helm 3 did away with Tiller, and we can now manage everything through
 Helm!
 
-In order to apply the various bits, go into one of the subfolders of `kube/` and
-follow the README!
+To install things:
+
+- Create the namespaces:
+```
+kubectl apply -f kube/namespaces.yaml
+```
+- Install DNS management:
+```
+helm upgrade --install --namespace dns dns kube/dns/
+```
+- Install cert-manager for TLS certificates:
+```
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.0.0-alpha.1/cert-manager.crds.yaml
+helm upgrade --install --namespace cert-manager cert-manager kube/ssl/
+```
+- Install the web apps:
+```
+helm upgrade --install --namespace web web kube/web/
+```
+- Install observability tools:
+```
+helm upgrade --install --namespace observability observability kube/observability/
+```

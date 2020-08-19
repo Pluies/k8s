@@ -51,36 +51,44 @@ resource "google_container_cluster" "cluster" {
     password = var.kube_password
   }
 
-  node_pool {
-    # Per-zone node count
-    node_count = 2
+  # We can't create a cluster with no node pool defined, but we want to only use
+  # separately managed node pools. So we create the smallest possible default
+  # node pool and immediately delete it.
+  # See https://www.terraform.io/docs/providers/google/guides/using_gke_with_terraform.html#node-pool-management
+  remove_default_node_pool = true
+  initial_node_count       = 1
+}
 
-    management {
-      auto_repair  = true
-      auto_upgrade = true
+resource "google_container_node_pool" "preemptible_nodes" {
+  name       = "preemptible-nodes"
+  location   = "us-east1-c"
+  cluster    = google_container_cluster.cluster.name
+  node_count = 2
+
+  node_config {
+    # Let's try the new types!
+    machine_type = "e2-small"
+
+    # More cost-saving: preemptible instances are cheaper
+    preemptible = true
+
+    # More cost-saving: 30GB total storage is included in the always-free tier
+    disk_size_gb = 10
+
+    # TODO find out what this does
+    metadata = {
+      "disable-legacy-endpoints" = "true"
     }
 
-    node_config {
-      # Cost-saving: `f1-micro` is the smallest possible instance type... But doesn't work anymore.
-      # Let's try the new types!
-      machine_type = "e2-micro"
-
-      # More cost-saving: preemptible instances are cheaper
-      preemptible = true
-
-      # More cost-saving: 30GB total storage is included in the always-free tier
-      disk_size_gb = 10
-
-      oauth_scopes = [
-        "https://www.googleapis.com/auth/devstorage.read_only",
-        "https://www.googleapis.com/auth/logging.write",
-        "https://www.googleapis.com/auth/monitoring",
-        "https://www.googleapis.com/auth/service.management.readonly",
-        "https://www.googleapis.com/auth/servicecontrol",
-        "https://www.googleapis.com/auth/trace.append",
-        "https://www.googleapis.com/auth/ndev.clouddns.readwrite", # Manage DNS from k8s
-      ]
-    }
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append",
+      "https://www.googleapis.com/auth/ndev.clouddns.readwrite", # Manage DNS from k8s
+    ]
   }
 }
 
