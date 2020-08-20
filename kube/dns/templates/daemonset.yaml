@@ -18,6 +18,13 @@ spec:
       - name: gcloud-dns-updater
         imagePullPolicy: Always
         image: pluies/gcloud_dns_updater
+        resources:
+          limits:
+            cpu: 10m
+            memory: 64Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
         env:
         - name: DNS_ZONE
           value: {{ $.Values.zone }}

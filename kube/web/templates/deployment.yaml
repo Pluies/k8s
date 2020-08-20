@@ -21,6 +21,13 @@ spec:
         image: pluies/blog
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            cpu: 100m
+            memory: 32Mi
+          requests:
+            cpu: 20m
+            memory: 32Mi
 
 ---
 apiVersion: apps/v1
@@ -45,6 +52,13 @@ spec:
         image: pluies/antipodes
         ports:
         - containerPort: 3000
+        resources:
+          limits:
+            cpu: 250m
+            memory: 128Mi
+          requests:
+            cpu: 150m
+            memory: 128Mi
         env:
         - name: GOOGLE_MAPS_API_KEY
           value: {{ $.Values.antipodes.google_maps_api_key }}
