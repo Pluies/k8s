@@ -73,7 +73,7 @@ resource "google_container_node_pool" "preemptible_nodes" {
     preemptible = true
 
     # More cost-saving: 30GB total storage is included in the always-free tier
-    disk_size_gb = 10
+    disk_size_gb = 15
 
     # TODO find out what this does
     metadata = {

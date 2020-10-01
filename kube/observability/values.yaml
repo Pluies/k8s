@@ -1,0 +1,13 @@
+newrelic:
+  global:
+    licenseKey: ~ # Add you license key here or use helm --set
+    cluster: easternkube
+  namespace: observability
+  newrelic-infrastructure:
+    privileged: true
+  ksm:
+    enabled: true
+  prometheus:
+    enabled: true
+  kubeEvents:
+    enabled: true

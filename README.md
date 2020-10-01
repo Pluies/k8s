@@ -12,6 +12,19 @@ Terraform
 things, mainly around setting up the GKE cluster itself and setting up firewalls
 as needed.
 
+You'll need to create a [GCloud storage bucket](https://cloud.google.com/storage/docs/creating-buckets) in the [Google Cloud Console](https://console.cloud.google.com/storage/browser)
+to store the Terraform state file.
+
+Once this bucket is created, you can initialise the repository. In the `terraform/`
+folder, run:
+
+```sh
+# Ensure you're logged into gcloud
+gcloud auth application-default login
+# Then initialise the repo & backend
+terraform init -backend-config bucket=name-of-the-bucket-created-above
+```
+
 To run terraform, from the `terraform/` folder:
 
 ```sh
@@ -41,20 +54,24 @@ To install things:
 ```
 kubectl apply -f kube/namespaces.yaml
 ```
+
 - Install DNS management:
 ```
 helm upgrade --install --namespace dns dns kube/dns/
 ```
+
 - Install cert-manager for TLS certificates:
 ```
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.0.0-alpha.1/cert-manager.crds.yaml
 helm upgrade --install --namespace cert-manager cert-manager kube/ssl/
 ```
+
 - Install the web apps:
 ```
 helm upgrade --install --namespace web web kube/web/
 ```
-- Install observability tools:
+
+- Install observability tools (if you like!):
 ```
-helm upgrade --install --namespace observability observability kube/observability/
+helm upgrade --install --set newrelic.global.licenseKey=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --namespace observability observability kube/observability/
 ```
