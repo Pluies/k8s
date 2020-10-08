@@ -1,6 +1,0 @@
----
-dependencies:
-- name: nri-bundle
-  alias: newrelic
-  version: 1.6.0
-  repository: "@newrelic"

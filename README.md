@@ -70,8 +70,3 @@ helm upgrade --install --namespace cert-manager cert-manager kube/ssl/
 ```
 helm upgrade --install --namespace web web kube/web/
 ```
-
-- Install observability tools (if you like!):
-```
-helm upgrade --install --set newrelic.global.licenseKey=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --namespace observability observability kube/observability/
-```
