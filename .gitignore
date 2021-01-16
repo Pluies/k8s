@@ -7,3 +7,4 @@ env
 charts
 requirements.lock
 charts
+google-credentials.json
