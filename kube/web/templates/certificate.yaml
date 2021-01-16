@@ -48,6 +48,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 8089
+    targetPort: 80
   selector:
-    acme.cert-manager.io/http01-solver: "true"
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/component: controller

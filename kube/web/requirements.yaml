@@ -3,3 +3,6 @@ dependencies:
 - name: ambassador
   version: 6.5.2
   repository: "https://www.getambassador.io"
+- name: ingress-nginx
+  version: 3.20.1
+  repository: "@ingress-nginx"

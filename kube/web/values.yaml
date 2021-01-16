@@ -60,3 +60,11 @@ ambassador:
     requests:
       cpu: 150m
       memory: 128Mi
+
+# Use the nginx ingress controller to server cert-manager Ingress resources
+# Otherwise, we end up in a silly round-robin where cert validations have a 1/3 chance of success as requests could go to either pods
+# TODO: migrate entirely off Ambassador, and on the nginx ingress controller
+ingress-nginx:
+  controller:
+    service:
+      type: ClusterIP
