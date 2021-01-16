@@ -39,6 +39,7 @@ spec:
   prefix: /.well-known/acme-challenge/
   rewrite: ""
   service: acme-challenge-service
+
 ---
 apiVersion: v1
 kind: Service
