@@ -17,8 +17,6 @@ resource "google_container_cluster" "cluster" {
     }
   }
 
-  # We'll run a zonal cluster in order to withstand the loss of a single zone
-  # This will create three node pools (one per zone) containing 1 instance each
   # Note: to benefit from the always-free tier on instances, use the following regions:
   # - Oregon: us-west1
   # - Iowa: us-central1
