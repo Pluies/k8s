@@ -11,60 +11,14 @@ antipodes:
   # source of the webpage, so no secret at all.
   google_maps_api_key: AIzaSyAdHQ05Rzxj2GOfcdKFJ3T2O0JOoGmktlU
 
-ambassador:
-  daemonSet: true
-  hostNetwork: true
-  dnsPolicy: ClusterFirstWithHostNet
-  securityContext:
-    runAsUser: 0
-
-  image:
-    repository: docker.io/datawire/ambassador
-    tag: 1.6.2
-  enableAES: false
-
-  service:
-    type: ClusterIP
-    http:
-      enabled: true
-      port: 80
-      targetPort: 8080
-    https:
-      enabled: true
-      port: 443
-      targetPort: 8443
-    annotations:
-      getambassador.io/config: |
-        ---
-        apiVersion: ambassador/v1
-        kind: Module
-        name: ambassador
-        config:
-          service_port: 443
-          diagnostics:
-            enabled: true
-        ---
-        apiVersion: ambassador/v1
-        kind: Module
-        name: tls
-        config:
-          server:
-            enabled: True
-            redirect_cleartext_from: 80
-            secret: blog-cert-prod-tls
-
-  resources:
-    limits:
-      cpu: 350m
-      memory: 256Mi
-    requests:
-      cpu: 150m
-      memory: 128Mi
-
-# Use the nginx ingress controller to server cert-manager Ingress resources
-# Otherwise, we end up in a silly round-robin where cert validations have a 1/3 chance of success as requests could go to either pods
-# TODO: migrate entirely off Ambassador, and on the nginx ingress controller
+# Use the nginx ingress controller to serve Ingress resources
 ingress-nginx:
   controller:
+    kind: DaemonSet
+    hostPort:
+      enabled: true
+      ports:
+        http: 80
+        https: 443
     service:
       type: ClusterIP

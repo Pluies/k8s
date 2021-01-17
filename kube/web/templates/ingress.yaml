@@ -1,0 +1,63 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: blog
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - blog.florentdelannoy.com
+    secretName: blog-ingress-tls
+  rules:
+  - host: blog.florentdelannoy.com
+    http:
+      paths:
+      - backend:
+          serviceName: blog
+          servicePort: 80
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: kube
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.org/location-snippets: |
+      return 200 'Hello from Kube! 🥳';
+spec:
+  tls:
+  - hosts:
+    - kube.florentdelannoy.com
+    secretName: kube-ingress-tls
+  rules:
+  - host: kube.florentdelannoy.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: blog
+          servicePort: 80
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: antipodes
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - antipodes.plui.es
+    secretName: antipodes-ingress-tls
+  rules:
+  - host: antipodes.plui.es
+    http:
+      paths:
+      - backend:
+          serviceName: antipodes
+          servicePort: 80
+
