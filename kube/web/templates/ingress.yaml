@@ -25,6 +25,7 @@ metadata:
   name: kube
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # TODO: figure out why this doesn't work
     nginx.org/location-snippets: |
       return 200 'Hello from Kube! 🥳';
 spec:
