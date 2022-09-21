@@ -1,11 +1,12 @@
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: blog
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - blog.florentdelannoy.com
@@ -14,12 +15,16 @@ spec:
   - host: blog.florentdelannoy.com
     http:
       paths:
-      - backend:
-          serviceName: blog
-          servicePort: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: blog
+            port:
+              number: 80
 
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: kube
@@ -29,6 +34,7 @@ metadata:
     nginx.org/location-snippets: |
       return 200 'Hello from Kube! 🥳';
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - kube.florentdelannoy.com
@@ -38,18 +44,22 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: blog
-          servicePort: 80
+          service:
+            name: blog
+            port:
+              number: 80
 
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: antipodes
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - antipodes.plui.es
@@ -58,7 +68,11 @@ spec:
   - host: antipodes.plui.es
     http:
       paths:
-      - backend:
-          serviceName: antipodes
-          servicePort: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: antipodes
+            port:
+              number: 80
 

@@ -62,7 +62,7 @@ helm upgrade --install --namespace dns dns kube/dns/
 
 - Install cert-manager for TLS certificates:
 ```
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.9.0/cert-manager.crds.yaml
 helm upgrade --install --namespace cert-manager cert-manager kube/ssl/
 ```
 

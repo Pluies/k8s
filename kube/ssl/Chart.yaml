@@ -1,2 +1,9 @@
+---
+apiVersion: v2
 name: ssl
 version: 1.0.0
+dependencies:
+- name: cert-manager
+  version: 1.9.1
+  repository: "@jetstack"
+

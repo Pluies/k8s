@@ -2,7 +2,7 @@
 resource "google_container_cluster" "cluster" {
   name               = "easternkube"
   location           = "us-east1-c"
-  min_master_version = "1.16"
+  min_master_version = "1.24"
 
   # Choose how quickly you'd like new features!
   release_channel {
@@ -38,11 +38,6 @@ resource "google_container_cluster" "cluster" {
   # Disable monitoring too
   monitoring_service = "none"
 
-  master_auth {
-    username = var.kube_username
-    password = var.kube_password
-  }
-
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
   # node pool and immediately delete it.
@@ -60,6 +55,9 @@ resource "google_container_node_pool" "preemptible_nodes" {
   node_config {
     # Let's try the new types!
     machine_type = "e2-small"
+
+    # Ensure we're using containerd-based images to work with GKE 1.24+
+    image_type = "COS_CONTAINERD"
 
     # More cost-saving: preemptible instances are cheaper
     preemptible = true
@@ -103,17 +101,4 @@ resource "google_dns_managed_zone" "zone" {
   dnssec_config {
     state = "off"
   }
-}
-
-# The following outputs allow authentication and connectivity to the GKE Cluster.
-output "client_certificate" {
-  value = google_container_cluster.cluster.master_auth.0.client_certificate
-}
-
-output "client_key" {
-  value = google_container_cluster.cluster.master_auth.0.client_key
-}
-
-output "cluster_ca_certificate" {
-  value = google_container_cluster.cluster.master_auth.0.cluster_ca_certificate
 }

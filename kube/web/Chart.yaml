@@ -1,2 +1,8 @@
+---
+apiVersion: v2
 name: web
 version: 1.0.0
+dependencies:
+- name: ingress-nginx
+  version: 4.2.5
+  repository: "@ingress-nginx"
