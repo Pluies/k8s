@@ -44,10 +44,6 @@ and I really like the templating support and auto-ordering of elements (so that
 a ConfigMap gets applied before the Deployment that relies on it, regardless of
 whether it's before it in the file or not).
 
-Helm 2 used to require a server-side component, Tiller, which was a bit heavy.
-Thankfully, Helm 3 did away with Tiller, and we can now manage everything through
-Helm!
-
 To install things:
 
 - Create the namespaces:
