@@ -2,7 +2,7 @@
 resource "google_container_cluster" "cluster" {
   name               = "easternkube"
   location           = "us-east1-c"
-  min_master_version = "1.24"
+  min_master_version = "1.29"
 
   # Choose how quickly you'd like new features!
   release_channel {
